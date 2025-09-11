@@ -1,74 +1,72 @@
+using System.Diagnostics;
+using cruudd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using primercrud.Models;
 
-namespace primercrud.Controllers
+namespace cruudd.Controllers
 {
-    public class ProdutosController : Controller
+    public class CadastroController : Controller
     {
         private readonly AppDbContext _context;
 
-        public ProdutosController(AppDbContext context)
+        public CadastroController(AppDbContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            var produtos = await _context.Produtos.ToListAsync();
-            return View(produtos);
+            var cadastros = await _context.Cadastros.ToListAsync();
+            return View(cadastros);
         }
-
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Produto produto)
+        public async Task<IActionResult> Create(Cadastro cadastro)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(produto);
+                _context.Add(cadastro);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(produto);
+            return View(cadastro);
         }
-        
         public async Task<IActionResult> Edit(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
-            if (produto == null) return NotFound();
-            return View(produto);
+            var cadastro = await _context.Cadastros.FindAsync(id);
+            if (cadastro == null) return NotFound();
+            return View(cadastro);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, Produto produto)
+        public async Task<IActionResult> Edit(int id, Cadastro cadastro)
         {
-            if (id != produto.Id) return NotFound();
+            if (id != cadastro.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                _context.Update(produto);
+                _context.Update(cadastro);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(produto);
+            return View(cadastro);
         }
-
         public async Task<IActionResult> Delete(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
-            if (produto == null) return NotFound();
-            return View(produto);
+            var cadastro = await _context.Cadastros.FindAsync(id);
+            if (cadastro == null) return NotFound();
+            return View(cadastro);
         }
 
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
-            _context.Produtos.Remove(produto);
+            var cadastro = await _context.Cadastros.FindAsync(id);
+            _context.Cadastros.Remove(cadastro);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
